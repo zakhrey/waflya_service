@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: waflya_service
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    view-names: '*'
