@@ -2,6 +2,7 @@ spring:
   application:
     name: waflya_service
   thymeleaf:
+    cache: false
     prefix: classpath:/templates/
     suffix: .html
     view-names: '*'

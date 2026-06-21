@@ -1,8 +1,11 @@
 package ru.zakhrey.waflya_service.controller.impl;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import ru.zakhrey.waflya_service.controller.DesignWaflyaController;
 import ru.zakhrey.waflya_service.model.Waflya;
@@ -36,7 +39,10 @@ public class DesignWaflyaControllerImpl implements DesignWaflyaController {
 
     @ModelAttribute("waflyaOrder")
     public WaflyaOrder order() {
-        return WaflyaOrder.builder().waflyas(new ArrayList<>()).build();
+
+        val order =  new WaflyaOrder();
+        order.setWaflyas(new ArrayList<>());
+        return order;
     }
     @ModelAttribute("waflya")
     public Waflya waflya() {
@@ -49,8 +55,13 @@ public class DesignWaflyaControllerImpl implements DesignWaflyaController {
     }
 
     @Override
-    public String processWaflya(final Waflya waflya,
+    public String processWaflya(@Valid final Waflya waflya, Errors errors,
                                 @ModelAttribute final WaflyaOrder waflyaOrder) {
+
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
         waflyaOrder.addWaflya(waflya);
         log.info("processing waflya: {}", waflya);
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+
+<h1>Order your Waflya creations!</h1>
+
+<img th:src="@{/images/waffle.png}" width="400" height="300" />
+
+<form method="POST" th:action="@{/orders}" th:object="${waflyaOrder}">
+
+    <a th:href="@{/design}" id="another">Design another Waflya</a> <br>
+
+    <ul>
+        <li th:each="waflya: ${waflyaOrder.waflyas}">
+            <span th:text="${waflya.name}">waflya name</span>
+        </li>
+    </ul>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('waflyas')}"
+          th:errors="*{waflyas}">Waflyas error</span>
+    <br/>
+
+    <h3>Deliver my taco masterpieces to...</h3>
+    <label for="clientName">Name: </label>
+    <label>
+        <input type="text" th:field="*{clientName}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('clientName')}"
+              th:errors="*{clientName}">Name error</span>
+    </label>
+    <br/>
+
+    <label for="clientAddress">Address: </label>
+    <label>
+        <input type="text" th:field="*{clientAddress}"/>
+        <span class="validationError"
+              th:if="${#fields.hasErrors('clientAddress')}"
+              th:errors="*{clientAddress}">Name error</span>
+    </label>
+    <br/>
+
+    <input type="submit" value="Submit order"/>
+</form>
+
+</body>
+</html>

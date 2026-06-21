@@ -7,6 +7,7 @@
 <head>
     <title>Waflya</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
 </head>
 
 <body>
@@ -15,6 +16,12 @@
     <img th:src="@{/images/waffle.png}" width="400" height="300" />
 
     <form method="POST" th:action="@{/design}" th:object="${waflya}">
+
+        <span class="validationError"
+              th:if="${#fields.hasErrors('ingredients')}"
+              th:errors="*{ingredients}">Ingredient Error
+        </span>
+
         <div class="grid">
 
             <div class="ingredient-group" id="flour">
@@ -63,6 +70,10 @@
             <h3>Name your waflya creation: </h3>
             <label>
                 <input type="text" th:field="*{name}"/>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('name')}"
+                      th:errors="*{name}">Name Error</span>
+                <br>
             </label>
             <br>
 
