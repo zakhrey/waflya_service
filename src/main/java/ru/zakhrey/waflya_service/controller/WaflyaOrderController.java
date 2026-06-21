@@ -3,43 +3,31 @@ package ru.zakhrey.waflya_service.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import ru.zakhrey.waflya_service.model.Ingredient;
+import org.springframework.web.bind.annotation.*;
 import ru.zakhrey.waflya_service.model.Waflya;
 import ru.zakhrey.waflya_service.model.WaflyaOrder;
 import ru.zakhrey.waflya_service.model.type.IngredientType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.zakhrey.waflya_service.constant.IngredientsConstant.INGREDIENT_LIST;
 
 @Slf4j
 @Controller
+@RequestMapping("/design")
 @SessionAttributes("waflyaOrder")
 public class WaflyaOrderController {
 
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = List.of(
-                new Ingredient("1", "wheat flour", IngredientType.FLOUR),
-                new Ingredient("2", "corn flour", IngredientType.FLOUR),
-                new Ingredient("3", "rye flour", IngredientType.FLOUR),
-                new Ingredient("4", "milk", IngredientType.WRAP),
-                new Ingredient("5", "kefir", IngredientType.WRAP),
-                new Ingredient("6", "yogurt", IngredientType.WRAP),
-                new Ingredient("7", "ice cream", IngredientType.FILLER),
-                new Ingredient("8", "fried beefsteak", IngredientType.FILLER),
-                new Ingredient("9", "grilled chicken", IngredientType.FILLER),
-                new Ingredient("10", "chocolate", IngredientType.TOPPING),
-                new Ingredient("11", "Tkemali", IngredientType.TOPPING),
-                new Ingredient("11", "curry", IngredientType.TOPPING));
+
 
         Arrays.stream(IngredientType.values()).forEach(type -> {
             model.addAttribute(
                 type.name().toLowerCase(),
-                ingredients
+                INGREDIENT_LIST
                     .stream()
                     .filter(ingredient -> ingredient.type().equals(type))
                     .collect(Collectors.toList())
@@ -49,15 +37,25 @@ public class WaflyaOrderController {
 
     @ModelAttribute("waflyaOrder")
     public WaflyaOrder order() {
-        return WaflyaOrder.builder().build();
+        return WaflyaOrder.builder().waflyas(new ArrayList<>()).build();
     }
     @ModelAttribute("waflya")
     public Waflya waflya() {
-        return Waflya.builder().build();
+        return new Waflya();
     }
 
-    @GetMapping("/design")
+    @GetMapping
     public String showDesignForm() {
         return "design";
+    }
+
+
+    @PostMapping
+    public String processWaflya(final Waflya waflya,
+                                @ModelAttribute final WaflyaOrder waflyaOrder) {
+        waflyaOrder.addWaflya(waflya);
+        log.info("processing waflya: {}", waflya);
+
+        return "redirect:/orders/current";
     }
 }

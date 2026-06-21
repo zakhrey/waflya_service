@@ -13,4 +13,8 @@ public class WaflyaOrder {
     String id;
     String clientName;
     List<Waflya> waflyas;
+
+    public void addWaflya(Waflya waflya) {
+        waflyas.add(waflya);
+    }
 }

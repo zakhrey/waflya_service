@@ -12,19 +12,17 @@
 <body>
     <h1>Design your waflya!</h1>
 
-    <img th:src="@{/images/waffle.png}" width="400" height="300"/>
+    <img th:src="@{/images/waffle.png}" width="400" height="300" />
 
-    <form method="POST" th:object="${waflya}">
-    <span class="validationError"
-          th:if="${#fields.hasErrors('ingredients')}"
-          th:errors="*{ingredients}">Ingredient Error
-    </span>
+    <form method="POST" th:action="@{/design}" th:object="${waflya}">
         <div class="grid">
 
             <div class="ingredient-group" id="flour">
                 <h3>Designate your flour:</h3>
                 <div th:each="ingredient: ${flour}">
-                    <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                    <label>
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
+                    </label>
                     <span th:text="${ingredient.name}">INGREDIENT</span>
                 </div>
             </div>
@@ -32,7 +30,9 @@
             <div class="ingredient-group" id="wrap">
                 <h3>Designate your wrap:</h3>
                 <div th:each="ingredient: ${wrap}">
-                    <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                    <label>
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
+                    </label>
                     <span th:text="${ingredient.name}">INGREDIENT</span>
                 </div>
             </div>
@@ -40,7 +40,9 @@
             <div class="ingredient-group" id="filler">
                 <h3>Designate your filler:</h3>
                 <div th:each="ingredient: ${filler}">
-                    <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                    <label>
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
+                    </label>
                     <span th:text="${ingredient.name}">INGREDIENT</span>
                 </div>
             </div>
@@ -48,7 +50,9 @@
             <div class="ingredient-group" id="topping">
                 <h3>Designate your topping:</h3>
                 <div th:each="ingredient: ${topping}">
-                    <input name="ingredients" type="checkbox" th:value="${ingredient.id}"/>
+                    <label>
+                        <input th:field="*{ingredients}" type="checkbox" th:value="${ingredient.id}"/>
+                    </label>
                     <span th:text="${ingredient.name}">INGREDIENT</span>
                 </div>
             </div>
@@ -56,15 +60,13 @@
         </div>
 
         <div>
-            <h3>Name your taco creation: </h3>
-            <input type="text" th:field="*{name}"/>
-
-            <span class="validationError"
-                  th:if="${#fields.hasErrors('name')}"
-                  th:errors="*{name}">Name Error</span>
+            <h3>Name your waflya creation: </h3>
+            <label>
+                <input type="text" th:field="*{name}"/>
+            </label>
             <br>
 
-            <button>Submit your taco</button>
+            <button>Submit your waflya</button>
         </div>
     </form>
 </body>
